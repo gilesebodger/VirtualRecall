@@ -1,42 +1,12 @@
 ﻿using System;
 
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Linq;
+using System.Threading.Tasks;
 
 
 namespace CodingSolution
 {
-
-    public interface IHasNumeric
-    {
-        double Num { get; }
-    }
-
-
-    public class SomeNumeric : IHasNumeric
-    {
-        public SomeNumeric(double d)
-        {
-            Num = d;
-        }
-
-        public double Num { get; set; }
-    }
-
-    public class Point
-    {
-        public Point(double x, double y)
-        {
-            X = x;
-            Y = y;
-        }
-
-        public double X;
-        public double Y;
-    }
-
-
     public class LibClass
     {
 
@@ -97,11 +67,7 @@ namespace CodingSolution
 
 
 
-
-
-
         private int _counterClosure;
-        private int _counterNonClosure;
 
 
         /// <summary>
@@ -112,34 +78,28 @@ namespace CodingSolution
         /// <returns></returns>
         public async Task<int> ParallelIncrement(int n)
         {
-            _counterClosure = 0;
-            _counterNonClosure = 0;
-
-
             var tasks = Enumerable.Range(1, n).Select(RunStep);
             await Task.WhenAll(tasks);
 
-
             var expectedCounter = (n * (n + 1) / 2);
-            Console.WriteLine($"Expected {expectedCounter}, Closure {_counterClosure}, counterNONClosure {_counterNonClosure}");
             return _counterClosure;
         }
 
         private Task RunStep(int stepValue)
         {
-            _counterNonClosure += stepValue;
+            // moved here
+            _counterClosure += stepValue;
 
             // move the captured variable outside the scope of the inner func
             // as it is being captured in a closure. I believe that there is no guarantee
             // as to when the Tasks actually get Run in a WhenAll(tasks) call. And the closure 
             // only gets created at runtime when the Func is being invoked so the captured
             // variable is not always the value we expect it should be when the capture occurs 
-            // Could have the same value captured for consecutive tasks
+            // Could have the same value captured for consecutive tasks if one of those tasks hasnt ran yet
 
             return Task.Run(async () =>
             {
                 await Task.Delay(2);
-                _counterClosure += stepValue;
             });
         }
 
@@ -154,44 +114,34 @@ namespace CodingSolution
         /// </returns>
         public static bool AnyGranted(Capabilities granted, Capabilities requested)
         {
-            /*
-             * foreach flag in requested
-             * 
-             */
+            var hasNone = requested == Capabilities.None;
+            if (hasNone)
+            {
+                return true;
+            }
 
             bool hasBitSet = false;
 
+            // loop all enum values ...
             foreach (Capabilities flagToCheck in Enum.GetValues(typeof(Capabilities)))
             {
-                if (requested.HasFlag(flagToCheck))
+                // enum value of 0 always returns true as set in a flags enum, dealt with above 
+                if (flagToCheck == Capabilities.None)
                 {
-                    if (granted.HasFlag(flagToCheck))
-                    {
-                        hasBitSet = true;
-                    }
+                    continue;
                 }
+
+                if (requested.HasFlag(flagToCheck) && granted.HasFlag(flagToCheck))
+                {
+                    hasBitSet = true;
+                    break;
+                }                
             }
 
             return hasBitSet;
-
         }
 
 
-    }
-
-
-    [Flags]
-    public enum Capabilities
-    {
-        None = 0,
-        All = ~0,
-
-        Spin = 1,
-        Raise = 2,
-        Lower = 4,
-        Flatten = 8,
-        Expand = 16,
-        Drop = 32,
     }
 }
 

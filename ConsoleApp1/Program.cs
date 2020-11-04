@@ -44,7 +44,7 @@ namespace ConsoleApp1
 
 
             var granted = Capabilities.Expand | Capabilities.Raise | Capabilities.Spin;
-            var requested = Capabilities.All;
+            var requested = Capabilities.Flatten;
             bool anyGranted;
             if (LibClass.AnyGranted(granted, requested))
             {
