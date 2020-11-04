@@ -1,0 +1,39 @@
+﻿<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN">
+<html lang="en">
+<head>
+    <script type="text/javascript" src="https://code.jquery.com/jquery-2.1.4.min.js"></script>
+
+    <script>
+		/* Write JS here */
+        $(document).ready(function () {
+            $('#colorClicker').click(function () {
+                $('.c').addClass("green-text");
+            });
+        });
+    </script>
+
+
+    <style type="text/css">
+        /* Write CSS Here  */
+        .green-text {
+            color: #00ff21;
+        }
+
+        .b {
+            color: #ff0000;
+        }
+    </style>
+
+</head>
+<body>
+    <!-- Without changing anything below this line -->
+
+    <div id="somediv">
+        <p class="a">Leave this black</span></p>
+        <p class="b">Make this red</p>
+        <p class="c">Make this sentence green when <a id="colorClicker" href="#">this</a> link is clicked</p>
+    </div>
+</body>
+
+
+</html>

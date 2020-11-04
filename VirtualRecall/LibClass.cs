@@ -87,7 +87,7 @@ namespace CodingSolution
 
         private Task RunStep(int stepValue)
         {
-            // moved here
+            // moved to here
             _counterClosure += stepValue;
 
             // move the captured variable outside the scope of the inner func
