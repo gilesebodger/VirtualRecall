@@ -21,7 +21,7 @@ and IsNull(c.Active, 0) = 1 -- presuming that a null entry would mean the client
 
 -- DDL Statements
 /*
-Presuming if you want to keep the primary keys on the tables then we can only make better with non clustered indexs
+Presuming if you want to keep the primary keys on the tables then we can make better with non clustered indexs
 */
 CREATE NONCLUSTERED INDEX [IX_dbo.ClientAnimal_AnimalId] ON dbo.ClientAnimal (AnimalId)
 CREATE NONCLUSTERED INDEX [IX_dbo.ClientAnimal_ClientId] ON dbo.ClientAnimal (ClientId)
